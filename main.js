@@ -69,6 +69,7 @@ Background.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
+
 //~ function Guy(game) {
 	//~ this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.02, 3, false, false);
 	//~ this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.02, 3, false, false);
