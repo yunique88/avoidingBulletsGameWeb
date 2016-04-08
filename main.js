@@ -69,22 +69,22 @@ Background.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
-function Guy(game) {
-	this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.02, 3, false, false);
-	this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.02, 3, false, false);
-	this.animationW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 32, 32, 32, 0.02, 3, false, false);
-	this.animationNW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 32, 32, 32, 0.02, 3, false, false);
-	this.animationE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
-	this.animationSE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 64, 32, 32, 0.02, 3, false, false);
-	this.animationN = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 96, 32, 32, 0.02, 3, false, false);
-	this.animationNE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 96, 32, 32, 0.02, 3, false, false);
-	this.direction = "south";
-	this.moving = false;
-	Entity.call(this, game, 250, 250);
-}
-
-Guy.prototype = new Entity();
-Guy.prototype.constructor = Guy;
+//~ function Guy(game) {
+	//~ this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.02, 3, false, false);
+	//~ this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.02, 3, false, false);
+	//~ this.animationW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 32, 32, 32, 0.02, 3, false, false);
+	//~ this.animationNW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 32, 32, 32, 0.02, 3, false, false);
+	//~ this.animationE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
+	//~ this.animationSE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 64, 32, 32, 0.02, 3, false, false);
+	//~ this.animationN = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 96, 32, 32, 0.02, 3, false, false);
+	//~ this.animationNE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 96, 32, 32, 0.02, 3, false, false);
+	//~ this.direction = "south";
+	//~ this.moving = false;
+	//~ Entity.call(this, game, 250, 250);
+//~ }
+//~ 
+//~ Guy.prototype = new Entity();
+//~ Guy.prototype.constructor = Guy;
 
 //function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
 
