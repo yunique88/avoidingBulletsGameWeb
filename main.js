@@ -70,26 +70,67 @@ Background.prototype.draw = function (ctx) {
 }
 
 
-//~ function Guy(game) {
-	//~ this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.02, 3, false, false);
-	//~ this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.02, 3, false, false);
-	//~ this.animationW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 32, 32, 32, 0.02, 3, false, false);
-	//~ this.animationNW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 32, 32, 32, 0.02, 3, false, false);
-	//~ this.animationE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
-	//~ this.animationSE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 64, 32, 32, 0.02, 3, false, false);
-	//~ this.animationN = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 96, 32, 32, 0.02, 3, false, false);
-	//~ this.animationNE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 96, 32, 32, 0.02, 3, false, false);
-	//~ this.direction = "south";
-	//~ this.moving = false;
-	//~ Entity.call(this, game, 250, 250);
-//~ }
-//~ 
-//~ Guy.prototype = new Entity();
-//~ Guy.prototype.constructor = Guy;
+function Guy(game) {
+	
+	this.animation = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.05, 3, true, false);
+	this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
+	
+	this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.02, 3, false, false);
+	this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.02, 3, false, false);
+	this.animationW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 32, 32, 32, 0.02, 3, false, false);
+	this.animationNW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 32, 32, 32, 0.02, 3, false, false);
+	this.animationE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
+	this.animationSE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 64, 32, 32, 0.02, 3, false, false);
+	this.animationN = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 96, 32, 32, 0.02, 3, false, false);
+	this.animationNE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 96, 32, 32, 0.02, 3, false, false);
+	this.direction = "east";
+	this.moving = true;
+	this.jumping = false;
+    this.radius = 100;
+    this.ground = 400;
+	Entity.call(this, game, 250, 250);
+}
+
+Guy.prototype = new Entity();
+Guy.prototype.constructor = Guy;
 
 //function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
 
+Guy.prototype.update = function () {
+    if (this.game.space) this.jumping = true;
+    if (this.jumping) {
+        if (this.jumpAnimation.isDone()) {
+            this.jumpAnimation.elapsedTime = 0;
+            this.jumping = false;
+        }
+        var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
+        var totalHeight = 200;
 
+        if (jumpDistance > 0.5)
+            jumpDistance = 1 - jumpDistance;
+
+        //var height = jumpDistance * 2 * totalHeight;
+        var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
+        this.y = this.ground - height;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Guy.prototype.draw = function (ctx) {
+    if (this.jumping) {
+        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34);
+    }
+    else {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+    Entity.prototype.draw.call(this);
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////
 
 
 
@@ -145,6 +186,7 @@ Unicorn.prototype.draw = function (ctx) {
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/RobotUnicorn.png");
+ASSET_MANAGER.queueDownload("./img/guy.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -154,9 +196,11 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     var bg = new Background(gameEngine);
     var unicorn = new Unicorn(gameEngine);
+    var guy = new Guy(gameEngine);
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(unicorn);
+    gameEngine.addEntity(guy);
  
     gameEngine.init(ctx);
     gameEngine.start();
