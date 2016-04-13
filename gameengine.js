@@ -61,9 +61,72 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
 
+	var keyState = {};    
+	window.addEventListener('keydown',function(e){
+		keyState[e.keyCode || e.which] = true;
+	},true);    
+	window.addEventListener('keyup',function(e){
+		keyState[e.keyCode || e.which] = false;
+	},true);
+	
+	function gameLoop() {
+		that.moving = true;
+		if (keyState[37] && keyState[38]){
+			//~ console.log("up-left");
+			that.direction = "NW";
+		} else if (keyState[38] && keyState[39]){
+			//~ console.log("up-right");
+			that.direction = "NE";
+		} else if (keyState[39] && keyState[40]){
+			//~ console.log("down-right");
+			that.direction = "SE";
+		} else if (keyState[40] && keyState[37]){
+			//~ console.log("down-left");
+			that.direction = "SW";
+		} else if (keyState[37]){
+			//~ console.log("left");
+			that.direction = "W";
+		} else if (keyState[38]){
+			//~ console.log("up");
+			that.direction = "N";
+		} else if (keyState[39]){
+			//~ console.log("right");
+			that.direction = "E";
+		} else if (keyState[40]){
+			//~ console.log("down");
+			that.direction = "S";
+		} else {
+			that.moving = false;
+		}
+
+		setTimeout(gameLoop, 10);
+	}    
+	gameLoop();
     this.ctx.canvas.addEventListener("keydown", function (e) {
-        if (String.fromCharCode(e.which) === ' ') that.space = true;
-//        console.log(e);
+        if (String.fromCharCode(e.which) === ' ') {
+			//~ console.log("sapce pressed");
+			 that.space = true;
+		}
+        //~ key = [];
+        //~ key[e.keyCode] = e.type == 'keydown';
+        //~ console.log(key);
+        //~ if (e.keyCode == '37') {
+			//~ console.log("left pressed");
+		//~ } else if (e.keyCode == '38') {
+			//~ console.log("up pressed");
+		//~ } else if (e.keyCode == '39') {
+			//~ console.log("right pressed");
+        //~ } else if (e.keyCode == '40') {
+			//~ console.log("down pressed");
+		//~ } else if (e.keyCode == '38' && e.keyCode == '39') {
+			//~ console.log("up-right pressed");
+		//~ } else if (e.keyCode == '39' && e.keyCode == '40') {
+			//~ console.log("right-down pressed");
+        //~ } else if (e.keyCode == '40' && e.keyCode == '37') {
+			//~ console.log("down-left pressed");
+		//~ } else if (e.keyCode == '37' && e.keyCode == '38') {
+			//~ console.log("left-up pressed");
+		//~ }
         e.preventDefault();
     }, false);
 

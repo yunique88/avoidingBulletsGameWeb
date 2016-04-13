@@ -73,19 +73,20 @@ Background.prototype.draw = function (ctx) {
 function Guy(game) {
 	
 	this.animation = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.05, 3, true, false);
-	this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
+	this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, true, false);
 	
-	this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.02, 3, false, false);
-	this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.02, 3, false, false);
-	this.animationW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 32, 32, 32, 0.02, 3, false, false);
-	this.animationNW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 32, 32, 32, 0.02, 3, false, false);
-	this.animationE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.02, 3, false, false);
-	this.animationSE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 64, 32, 32, 0.02, 3, false, false);
-	this.animationN = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 96, 32, 32, 0.02, 3, false, false);
-	this.animationNE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 96, 32, 32, 0.02, 3, false, false);
-	this.direction = "east";
-	this.moving = true;
+	this.animationS = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 0, 32, 32, 0.06, 3, true, false);
+	this.animationSW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 0, 32, 32, 0.06, 3, true, false);
+	this.animationW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 32, 32, 32, 0.06, 3, true, false);
+	this.animationNW = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 32, 32, 32, 0.06, 3, true, false);
+	this.animationN = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 96, 32, 32, 0.06, 3, true, false);
+	this.animationNE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 96, 32, 32, 0.06, 3, true, false);
+	this.animationE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 0, 64, 32, 32, 0.06, 3, true, false);
+	this.animationSE = new Animation(ASSET_MANAGER.getAsset("./img/guy.png"), 96, 64, 32, 32, 0.06, 3, true, false);
+	this.direction = "S";
+	this.moving = false;
 	this.jumping = false;
+	this.location = {x:250, y:250};
     this.radius = 100;
     this.ground = 400;
 	Entity.call(this, game, 250, 250);
@@ -113,16 +114,89 @@ Guy.prototype.update = function () {
         var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
         this.y = this.ground - height;
     }
+    
+	this.direction = this.game.direction;
+    this.moving = this.game.moving;
+    if (this.moving) {
+		var factor = 3;
+		
+		if (this.direction == "S") {
+			//~ var moveDist = this.animationS.elapsedTime / this.animationS.totalTime;
+			this.y += factor;
+		} else if (this.direction == "N") {
+			//~ var moveDist = this.animationN.elapsedTime / this.animationN.totalTime;
+			this.y -= factor;
+		} else if (this.direction == "W") {
+			//~ var moveDist = this.animationW.elapsedTime / this.animationW.totalTime;
+			this.x -= factor;
+		} else if (this.direction == "E") {
+			//~ var moveDist = this.animationE.elapsedTime / this.animationE.totalTime;
+			this.x += factor;
+		} else if (this.direction == "NW") {
+			//~ var moveDist = this.animationNW.elapsedTime / this.animationNW.totalTime;
+			//~ var moveDist2 = Math.sqrt(Math.pow(factor, 2) / 2);
+			//~ this.x -= moveDist2;
+			//~ this.y -= moveDist2;
+			this.x -= factor/1.5;
+			this.y -= factor/1.5;
+		} else if (this.direction == "NE") {
+			//~ var moveDist = this.animationNE.elapsedTime / this.animationNE.totalTime;
+			//~ var moveDist2 = Math.sqrt(Math.pow(factor, 2) / 2);
+			//~ this.x += moveDist2;
+			//~ this.y -= moveDist2;
+			this.x += factor/1.5;
+			this.y -= factor/1.5;
+		} else if (this.direction == "SW") {
+			//~ var moveDist = this.animationSW.elapsedTime / this.animationSW.totalTime;
+			//~ var moveDist2 = Math.sqrt(Math.pow(factor, 2) / 2);
+			//~ this.x -= moveDist2;
+			//~ this.y += moveDist2;
+			this.x -= factor/1.5;
+			this.y += factor/1.5;
+		}else if (this.direction == "SE") {
+			//~ var moveDist = this.animationSE.elapsedTime / this.animationSE.totalTime;
+			//~ var moveDist2 = Math.sqrt(Math.pow(factor, 2) / 2);
+			//~ this.x += moveDist2;
+			//~ this.y += moveDist2;
+			this.x += factor/1.5;
+			this.y += factor/1.5;
+		}
+		//~ console.log("moving" + this.direction);
+		//~ console.log(this.location.x + ", " + this.location.y);
+	}
+    
     Entity.prototype.update.call(this);
 }
 
 Guy.prototype.draw = function (ctx) {
-    if (this.jumping) {
-        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34);
-    }
-    else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-    }
+    //~ if (this.jumping) {
+        //~ this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x + 17, this.y - 34);
+    //~ }
+    //~ else {
+        //~ this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    //~ }
+    
+    if (this.direction == "S") {
+		this.animationS.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "SW") {
+		this.animationSW.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "W") {
+		this.animationW.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "NW") {
+		this.animationNW.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "N") {
+		this.animationN.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "NE") {
+		this.animationNE.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "E") {
+		this.animationE.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else if (this.direction == "SE") {
+		this.animationSE.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	} else {
+		this.animationS.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+	}
+	
+	
     Entity.prototype.draw.call(this);
 }
 
@@ -199,7 +273,7 @@ ASSET_MANAGER.downloadAll(function () {
     var guy = new Guy(gameEngine);
 
     gameEngine.addEntity(bg);
-    gameEngine.addEntity(unicorn);
+    //~ gameEngine.addEntity(unicorn);
     gameEngine.addEntity(guy);
  
     gameEngine.init(ctx);
